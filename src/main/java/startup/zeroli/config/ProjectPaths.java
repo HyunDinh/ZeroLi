@@ -15,6 +15,9 @@ public class ProjectPaths {
     public static final String HREF_TO_HOMEPAGE = HREF_TO_MAINCONTROLLER + MainControllerServlet.HOMEPAGE_REDIRECT;
     public static final String HREF_TO_LOGINPAGE = HREF_TO_MAINCONTROLLER + MainControllerServlet.LOGINPAGE_REDIRECT;
     public static final String HREF_TO_PRODUCTPAGE = HREF_TO_MAINCONTROLLER + MainControllerServlet.PRODUCTPAGE_REDIRECT;
+    public static final String HREF_TO_BOOKPAGE = HREF_TO_MAINCONTROLLER + MainControllerServlet.BOOKPAGE_REDIRECT;
+    public static final String HREF_TO_SERVICE = HREF_TO_MAINCONTROLLER + MainControllerServlet.SERVICE_REDIRECT;
+    public static final String HREF_TO_CANVASPAGE = HREF_TO_MAINCONTROLLER + MainControllerServlet.CANVASPAGE_REDIRECT;
 
     // RedirectServlets -> JSP pages
     public static final String JSP_PATH = "/WEB-INF/view/pages/";
@@ -26,5 +29,6 @@ public class ProjectPaths {
     public static final String JSP_BOOKDETAILPAGE_PATH = JSP_PATH + "bookPage/bookDetail.jsp";
     public static final String JSP_CANVASPAGE_PATH = JSP_PATH + "canvas/canvasPage.jsp";
     public static final String JSP_CANVASDETAILSPAGE_PATH = JSP_PATH + "canvas/CanvasPageDetails.jsp";
+    public static final String JSP_SERVICE_PATH = JSP_PATH + "servicePage/servicePage.jsp";
     
 }

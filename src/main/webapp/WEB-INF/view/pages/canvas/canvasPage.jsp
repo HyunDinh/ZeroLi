@@ -102,7 +102,7 @@
 <div class="pinterest-grid">
     <c:forEach var="canvas" items="${canvas}">
         <div class="grid-item">
-            <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_VIEW_CANVAS %>&id=${canvas.id}">
+            <a href="<%= ProjectPaths.HREF_TO_CANVASPAGE %>&id=${canvas.id}">
                 <img src="${canvas.link}" alt="picture">
             </a>
         </div>

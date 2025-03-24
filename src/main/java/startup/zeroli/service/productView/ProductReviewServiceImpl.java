@@ -112,7 +112,6 @@ public class ProductReviewServiceImpl implements ProductReviewService {
             if (review.getViewId() == id) {
                 review.setStatus(Status.INACTIVE);
                 isUpdated = true;
-                ErrDialog.showError("" + review.getStatus());
                 break;
             }
         }

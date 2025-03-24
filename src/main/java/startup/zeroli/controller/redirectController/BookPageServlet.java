@@ -15,6 +15,7 @@ import startup.zeroli.controller.mainController.MainControllerServlet;
 import startup.zeroli.model.Book;
 import startup.zeroli.service.book.BookService;
 import startup.zeroli.service.book.BookServiceImpl;
+import startup.zeroli.utils.ErrDialog;
 
 @WebServlet(name = "BookPageServlet", urlPatterns = {MainControllerServlet.BOOKPAGE_SERVLET})
 public class BookPageServlet extends HttpServlet {
@@ -29,9 +30,8 @@ public class BookPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        
         switch (action) {
-            case MainControllerServlet.ACTION_VIEW_BOOK -> showBooksByCategory(request, response);
+            case MainControllerServlet.BOOKPAGE_REDIRECT -> showBooksByCategory(request, response);
             case MainControllerServlet.ACTION_VIEW_BOOKDETAIL -> showBooksDetail(request, response);
             case MainControllerServlet.ACTION_FAVORITE_BOOK -> addFavoriteBook(request, response);
             default ->

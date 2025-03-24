@@ -61,7 +61,6 @@ public class ProductPageServlet extends HttpServlet {
         if (action == null) {
             action = "";
         }
-        ErrDialog.showError("Servlet: " + action);
         switch (action) {
             case MainControllerServlet.ACTION_ADDREVIEW ->
                 addProductReview(request, response);
@@ -140,7 +139,6 @@ public class ProductPageServlet extends HttpServlet {
         int rating = Integer.parseInt(request.getParameter("rating"));
         String newContent = request.getParameter("newContent");
         ProductReview pr = new ProductReview(viewId, productId, rating, newContent);
-        ErrDialog.showError(pr.toString());
         productReviewServiceImpl.updateProductReview(pr);
         response.sendRedirect(ProjectPaths.HREF_TO_PRODUCTPAGE + "&id=" + productId);
     }

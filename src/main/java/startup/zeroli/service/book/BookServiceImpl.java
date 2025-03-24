@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class BookServiceImpl implements BookService {
     private final int option = 0;
-    private static final String filePath = "E:\\prj301\\ZeroLi\\src\\main\\java\\startup\\zeroli\\service\\book\\books.txt";
+    private static final String filePath = "D:\\code\\University\\ZeroLi\\src\\main\\java\\startup\\zeroli\\service\\book\\books.txt";
     private List<Book> books; // Lưu trữ danh sách sách để tránh đọc file nhiều lần
 
     public BookServiceImpl() {

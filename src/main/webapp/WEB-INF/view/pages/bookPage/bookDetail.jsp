@@ -5,7 +5,7 @@
   Time: 5:28 CH
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="startup.zeroli.controller.mainController.MainControllerServlet" %>
 <%@ page import="startup.zeroli.config.ProjectPaths" %>

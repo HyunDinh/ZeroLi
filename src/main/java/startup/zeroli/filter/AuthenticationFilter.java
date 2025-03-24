@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import startup.zeroli.controller.mainController.MainControllerServlet;
 
-@WebFilter("/mainMMM")
+@WebFilter("/main")
 public class AuthenticationFilter implements Filter {
 
     @Override

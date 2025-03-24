@@ -19,12 +19,16 @@ public class MainControllerServlet extends HttpServlet {
     public static final String LOGINPAGE_REDIRECT = "loginPage";
     public static final String PRODUCTPAGE_REDIRECT = "productPage";
     public static final String BOOKPAGE_REDIRECT = "bookPage";
+    public static final String SERVICE_REDIRECT = "servicePage";
+    public static final String CANVASPAGE_REDIRECT = "CanvasPage";
 
     // redirect to each servlets
     public static final String HOMEPAGE_SERVLET = "/" + HOMEPAGE_REDIRECT;
     public static final String LOGINPAGE_SERVLET = "/" + LOGINPAGE_REDIRECT;
     public static final String PRODUCTPAGE_SERVLET = "/" + PRODUCTPAGE_REDIRECT;
     public static final String BOOKPAGE_SERVLET = "/" + BOOKPAGE_REDIRECT;
+    public static final String SERVICEPAGE_SERVLET = "/" + SERVICE_REDIRECT;
+    public static final String CANVASPAGE_SERVLET = "/" + CANVASPAGE_REDIRECT;
 
     // main?action=
     // post (Action)
@@ -38,6 +42,7 @@ public class MainControllerServlet extends HttpServlet {
     public static final String ACTION_VIEW_BOOK = "viewBook"; // book
     public static final String ACTION_VIEW_BOOKDETAIL = "viewBookDetail"; // book
     public static final String ACTION_FAVORITE_BOOK = "favoriteBook"; // book
+    public static final String ACTION_SEARCH_CANVAS = "searchCanvas"; // canvas
 
     // session attribute
     public static final String SS_ATTR_ERROR = "aaaaaa";
@@ -63,14 +68,15 @@ public class MainControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // chuyen huong / tac vu don gian
         String action = request.getParameter("action");
-
         switch (action) {
-            case HOMEPAGE_REDIRECT, LOGINPAGE_REDIRECT, PRODUCTPAGE_REDIRECT ->
+            case HOMEPAGE_REDIRECT, LOGINPAGE_REDIRECT, PRODUCTPAGE_REDIRECT, SERVICE_REDIRECT, BOOKPAGE_REDIRECT, CANVASPAGE_REDIRECT ->
                 request.getRequestDispatcher(action).forward(request, response);
             case ACTION_SEARCHPRODUCT ->
                 request.getRequestDispatcher(PRODUCTPAGE_REDIRECT).forward(request, response);
-            case ACTION_VIEW_BOOK,ACTION_VIEW_BOOKDETAIL,ACTION_FAVORITE_BOOK ->
+            case ACTION_VIEW_BOOK, ACTION_VIEW_BOOKDETAIL, ACTION_FAVORITE_BOOK ->
                 request.getRequestDispatcher(BOOKPAGE_REDIRECT).forward(request, response);
+            case ACTION_SEARCH_CANVAS ->
+                request.getRequestDispatcher(CANVASPAGE_REDIRECT).forward(request, response);
             default ->
                 response.sendRedirect("errorAtMainController.jsp");
         }

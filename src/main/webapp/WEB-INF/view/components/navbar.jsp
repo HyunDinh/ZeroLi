@@ -23,7 +23,7 @@
                 <div class="dropdown">
                     <div class="dropdown-category">
                         <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE %>">Books</a>
-                        <a href="#">Canvas</a>
+                        <a href="<%= ProjectPaths.HREF_TO_CANVASPAGE %>">Canvas</a>
                         <a href="#">Showroom</a>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="dropdown">
                     <div class="dropdown-category">
                         <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE %>">Products</a>
-                        <a href="#">Services</a>
+                        <a href="<%= ProjectPaths.HREF_TO_SERVICE %>">Services</a>
                         <a href="#">AI-Service</a>
                     </div>
                 </div>
