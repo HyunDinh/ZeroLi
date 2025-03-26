@@ -1,45 +1,50 @@
 package startup.zeroli.model;
 
-import startup.zeroli.common.ProductStatus; // Import enum ProductStatus
+import jakarta.persistence.*;
+import startup.zeroli.common.ProductStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- *
- * @author Admin
- */
+@Entity
+@Table(name = "product")
 public class Product {
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
+    
+    @Column(nullable = false, length = 255)
     private String productName;
+    
+    @Column(length = 255)
     private String brandName;
+    
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+    
+    @Column(nullable = false)
     private int stock;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
     private ProductStatus productStatus;
-    private LocalDateTime createdDate;
+    
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdDate = LocalDateTime.now();
+    
     private LocalDateTime updatedDate;
+    
+    @Column(columnDefinition = "TEXT")
     private String description;
+    
+    @Column(length = 500)
     private String imageURL;
 
     public Product() {
     }
 
-    public Product(int productId, String productName, String brandName, BigDecimal price, int stock, ProductStatus productStatus, LocalDateTime createdDate, LocalDateTime updatedDate, String description, String imageURL) {
-        this.productId = productId;
-        this.productName = productName;
-        this.brandName = brandName;
-        this.price = price;
-        this.stock = stock;
-        this.productStatus = productStatus;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
-        this.description = description;
-        this.imageURL = imageURL;
-    }
-
-    public Product(int productId, String productName, String brandName, BigDecimal price, int stock, ProductStatus productStatus, String description, String imageURL) {
-        this.productId = productId;
+    public Product(String productName, String brandName, BigDecimal price, int stock, ProductStatus productStatus, String description, String imageURL) {
         this.productName = productName;
         this.brandName = brandName;
         this.price = price;
@@ -47,14 +52,11 @@ public class Product {
         this.productStatus = productStatus;
         this.description = description;
         this.imageURL = imageURL;
+        this.createdDate = LocalDateTime.now();
     }
-
+    
     public int getProductId() {
         return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 
     public String getProductName() {
@@ -101,10 +103,6 @@ public class Product {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
@@ -131,35 +129,19 @@ public class Product {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Product that)) {
-            return false;
-        }
-
-        return getProductId() == that.getProductId();
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return productId == product.productId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProductId());
+        return Objects.hash(productId);
     }
 
-    public ProductStatus setProductStatusFromString(String statusString) {
-        try {
-            this.productStatus = ProductStatus.valueOf(statusString.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            System.err.println("Invalid product status: " + statusString);
-            this.productStatus = ProductStatus.AVAILABLE;
-        }
-        return this.productStatus;
-    }
-    
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", brandName=" + brandName + ", price=" + price + ", stock=" + stock + ", productStatus=" + productStatus + ", description=" + description + ", imageURL=" + imageURL + '}';
+        return "Product{" + "productId=" + productId + ", productName='" + productName + '\'' + ", brandName='" + brandName + '\'' + ", price=" + price + ", stock=" + stock + ", productStatus=" + productStatus + ", description='" + description + '\'' + ", imageURL='" + imageURL + '\'' + '}';
     }
-
 }

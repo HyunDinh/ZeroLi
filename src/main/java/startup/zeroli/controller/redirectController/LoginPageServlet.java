@@ -16,7 +16,6 @@ import startup.zeroli.config.ProjectPaths;
 import startup.zeroli.controller.mainController.MainControllerServlet;
 import startup.zeroli.model.User;
 import startup.zeroli.service.user.UserServiceImpl;
-import startup.zeroli.utils.ErrDialog;
 
 /**
  *

@@ -18,9 +18,7 @@
     </head>
     <body>
 
-        <div>
-            <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response); %>
-        </div>
+        <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response);%>
 
         <div class="container">
             <div class="row">
@@ -65,7 +63,7 @@
                         <div class="company-info">
                             <h6>CÔNG TY CỔ PHẦN THƯƠNG MẠI DỊCH VỤ ZEROLI <span class="verified">✅</span></h6>
                         </div>
-                        <h6 class="fw-bold">Chính sách bán hàng</h6>
+                        <h6 class="fw-bold" style="font-size: 12px; margin-bottom: 5px">Chính sách bán hàng</h6>
                         <ul class="policy-list">
                             <li>Miễn phí giao hàng từ 5 triệu <a href="#">Xem chi tiết</a></li>
                             <li>Cam kết hàng chính hãng 100%</li>
@@ -80,23 +78,24 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="review-container">
-                        <h5>Đánh giá sản phẩm</h5>
-
-                        <form action="main" method="post" class="mb-3">
+                        <h5 style="font-size: 2rem;margin-bottom:20px; font-family:sans-serif ">Đánh giá sản phẩm</h5>
+                        <form action="main" method="post" class="review-form">
                             <input type="hidden" name="action" value="add-review">
                             <input type="hidden" name="productId" value="${product.productId}">
-                            <label for="userName">Tên người dùng:</label>
-                            <input type="text" name="userName" class="form-control mt-2" placeholder="Nhập tên người dùng..." required>
-                            <select name="rating" id="rating" class="form-select w-auto d-inline-block">
+
+                            <label for="rating">Đánh giá:</label>
+                            <select name="rating" id="rating" class="form-select">
                                 <option value="5">5 ★</option>
                                 <option value="4">4 ★</option>
                                 <option value="3">3 ★</option>
                                 <option value="2">2 ★</option>
                                 <option value="1">1 ★</option>
                             </select>
-                            <textarea name="comment" class="form-control mt-2" placeholder="Nhập đánh giá của bạn..." required></textarea>
 
-                            <button type="submit" class="btn btn-primary mt-2">Gửi đánh giá</button>
+                            <label for="comment">Nội dung đánh giá:</label>
+                            <textarea name="comment" class="form-control" placeholder="Nhập đánh giá của bạn..." required></textarea>
+
+                            <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
                         </form>
 
                         <c:choose>
@@ -105,10 +104,13 @@
                                     <div class="review-box" id="reviewBox-${review.viewId}">
                                         <div class="review-header">
                                             <div class="avatar">
-                                                <span>${fn:substring(review.userName, 0, 1)}</span>
+                                                <img class="avatar-img" 
+                                                     src="${pageContext.request.contextPath}/resources/avatarUser/${review.user.email}.png" 
+                                                     alt="User Avatar"
+                                                     onerror="this.src='${pageContext.request.contextPath}/resources/images/default-avatar.png'">
                                             </div>
                                             <div class="user-info">
-                                                <span class="userName">${review.userName}</span>
+                                                <span class="userName">${review.user.username}</span>
                                                 <div class="user-rating">
                                                     <span class="review-stars" id="ratingStars-${review.viewId}">
                                                         <c:forEach begin="1" end="${review.rating}">★</c:forEach>
@@ -139,7 +141,10 @@
                                             </div>
                                         </form>
 
-                                        <div class="review-actions" id="reviewActions-${review.viewId}">
+                                        <div class="review-actions" id="reviewActions-${review.viewId}" style="
+                                             position: absolute;
+                                             top: 203px;
+                                             left: 80px;">
                                             <form action="main" method="post" class="d-inline" onsubmit="return confirmDelete();">
                                                 <input type="hidden" name="action" value="delete-review">
                                                 <input type="hidden" name="viewId" value="${review.viewId}">
@@ -173,15 +178,11 @@
         min-height: 100vh;
     }
 
-    body {
-        padding-top: 200px; /* Matches navbar height (100px logo + padding) */
-    }
-
     /* Container for layout */
     .container {
         width: 100%;
         max-width: 1200px; /* Standard container width */
-        margin: 0 auto;
+        margin: 50px auto;
         padding: 0 15px;
     }
 
@@ -227,6 +228,7 @@
     }
 
     /* Product Container */
+
     .product-container {
         background: #fff;
         padding: 20px;
@@ -242,13 +244,24 @@
         border-radius: 10px;
         padding: 1rem;
         border: 1px solid #e0e0e0;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff; /* Tạo nền trắng giúp ảnh dễ nhìn hơn */
+        overflow: hidden; /* Tránh ảnh bị tràn ra ngoài khi phóng to */
+    }
+
+    .product-image:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng khi hover */
     }
 
     .product-title {
         font-size: 1.5rem;
         font-weight: 700;
         color: #333;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -267,7 +280,7 @@
         font-size: 0.95rem;
         color: #555;
         margin-bottom: 15px;
-        line-height: 1.6;
+        line-height: 1.8;
     }
 
     .product-info strong {
@@ -288,6 +301,7 @@
         display: inline-block;
         text-transform: uppercase;
         margin-right: 10px;
+        margin-top: 10px;
     }
 
     .btn-buy:hover {
@@ -352,8 +366,8 @@
         padding: 15px;
         border-radius: 10px;
         box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        position: absolute;
-        top: 100px;
+        position: fixed;
+        top: 70px;
     }
 
     .company-info {
@@ -390,6 +404,7 @@
         font-size: 0.9rem;
         display: flex;
         align-items: center;
+        gap: 10px;
     }
 
     .policy-list li::before {
@@ -449,62 +464,147 @@
     }
 
     /* Review Box */
+    /* Review Box */
     .review-box {
-        border-bottom: 1px solid #ddd;
-        padding: 15px 0;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        background: #fff;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        position: relative;
     }
 
-    .review-box:last-child {
-        border-bottom: none;
+    .review-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
-    /* Review Header */
+    /* Header Review */
     .review-header {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        margin-bottom: 10px;
     }
 
-    .user-info {
+    /* Avatar */
+    .avatar {
+        width: 40px;
+        height: 40px;
+        background: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        text-transform: uppercase;
+    }
+
+    .avatar-img {
+        width: 50px !important;
+        height: 50px !important;
+        min-width: 50px !important;
+        min-height: 50px !important;
+        border-radius: 50% !important;
+        aspect-ratio: 1/1 !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+
+    /* User Info */
+    .user-info {
+        flex-grow: 1;
     }
 
     .userName {
-        color: #007bff;
         font-weight: bold;
-        font-size: 1rem;
+        font-size: 16px;
+        color: #333;
     }
 
+    .user-rating {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: #FFD700; /* Màu vàng cho sao */
+    }
+
+    /* Review Stars */
     .review-stars {
+        font-size: 18px;
         color: #f5c518;
-        font-size: 1rem;
+        margin-left: 5px;
     }
 
+    /* Nội dung review */
     .review-comment {
-        font-size: 1rem;
-        color: #555;
-        margin: 5px 0;
+        font-size: 15px;
+        color: #444;
+        line-height: 1.5;
+        margin-top: 5px;
+    }
+
+    /* Hành động (Sửa, Xóa) */
+    .review-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .review-actions form {
+        display: inline-block;
+    }
+
+    /* Button Styling */
+    .review-actions button {
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: all 0.2s;
+    }
+
+    .review-actions .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+
+    .review-actions .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .review-actions .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .review-actions .btn-danger:hover {
+        background-color: #c82333;
     }
 
     /* Edit Form Styling */
     .edit-form {
         margin-top: 10px;
+        display: block;
     }
 
     .edit-form textarea {
         resize: vertical;
         min-height: 80px;
-        width: 100%; /* Đảm bảo textarea rộng toàn bộ */
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 8px;
+        font-size: 15px;
     }
 
     .edit-rating {
         display: flex;
         align-items: center;
         gap: 10px;
+        margin-top: 5px;
     }
 
     .edit-rating label {
@@ -512,100 +612,108 @@
         color: #333;
     }
 
-    /* Review Actions */
-    .review-actions {
-        display: flex;
-        gap: 10px;
+    /* Hiển thị khi chỉnh sửa */
+    .review-box.editing .edit-form {
+        display: block;
     }
 
-    .review-actions .btn {
-        padding: 8px 15px;
-        font-size: 0.9rem;
+    .review-box.editing .review-comment,
+    .review-box.editing .review-actions {
+        display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        .review-box {
+            padding: 12px;
+        }
+
+        .review-actions {
+            flex-direction: column;
+        }
+
+        .review-actions button {
+            width: 100%;
+        }
+    }
+
+    /* Review Form */
+    .review-form {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+
+    }
+
+    .review-form:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .review-form label {
+        font-weight: bold;
+        color: #333;
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .review-form .form-control,
+    .review-form .form-select {
+        width: 100%;
+        padding: 10px;
         border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        transition: 0.3s ease-in-out;
     }
 
-    .btn-warning {
-        background-color: #ffc107;
-        border: none;
-        color: #212529;
+    .review-form .form-control:focus,
+    .review-form .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
-    .btn-warning:hover {
-        background-color: #e0a800;
+    .review-form textarea {
+        resize: vertical;
+        min-height: 100px;
     }
 
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-        color: white;
+    .review-form button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 15px;
+        border-radius: 5px;
+        transition: all 0.2s;
     }
 
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
-
-    /* Đảm bảo căn chỉnh vị trí nút theo hàng ngang */
-    .review-box {
-        display: flex;
-        flex-direction: column;
-        gap: 5px; /* Khoảng cách giữa các nút */
-    }
-
-    .review-actions {
-        display: flex;
-        gap: 5px; /* Khoảng cách giữa nút Sửa và Xóa */
-    }
-
-    .btn-primary {
+    .review-form .btn-primary {
         background: #007bff;
         color: white;
         border: none;
     }
 
-    .btn-outline-primary {
-        background: white;
-        color: #007bff;
-        border: 1px solid #007bff;
+    .review-form .btn-primary:hover {
+        background: #0056b3;
     }
 
-    /* Avatar */
-    .avatar {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #4CAF50;
-        color: white;
-        font-size: 18px;
-        text-transform: uppercase;
-        margin-right: 10px;
+    /* Responsive */
+    @media (max-width: 600px) {
+        .review-form {
+            padding: 15px;
+        }
+
+        .review-form button {
+            font-size: 14px;
+        }
     }
 
-    /* Tên người dùng */
-    .userName {
-        color: #007bff;
-        font-weight: bold;
-    }
 
-    /* Căn chỉnh tên người dùng và sao đánh giá */
-    .user-rating {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    .review-stars {
-        color: #f5c518;
-        margin-left: 5px;
-    }
-
-    /* Đảm bảo tên người dùng nằm ở vị trí bên cạnh avatar */
-    .userName {
-        font-weight: bold;
-        margin-right: 10px;
-    }
 </style>
 
 <script>

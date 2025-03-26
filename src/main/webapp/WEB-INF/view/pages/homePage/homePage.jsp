@@ -13,5 +13,6 @@
     </head>
     <body>
         <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response); %>
+        <% request.getRequestDispatcher("/WEB-INF/view/components/footer.jsp").include(request, response); %>
     </body>
 </html>

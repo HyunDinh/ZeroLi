@@ -15,7 +15,6 @@ import startup.zeroli.controller.mainController.MainControllerServlet;
 import startup.zeroli.model.Book;
 import startup.zeroli.service.book.BookService;
 import startup.zeroli.service.book.BookServiceImpl;
-import startup.zeroli.utils.ErrDialog;
 
 @WebServlet(name = "BookPageServlet", urlPatterns = {MainControllerServlet.BOOKPAGE_SERVLET})
 public class BookPageServlet extends HttpServlet {

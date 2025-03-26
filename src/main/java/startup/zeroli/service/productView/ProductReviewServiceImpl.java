@@ -1,159 +1,133 @@
 package startup.zeroli.service.productView;
 
+import jakarta.persistence.EntityManager;
+import startup.zeroli.dal.GenericDAO;
 import startup.zeroli.model.ProductReview;
+import startup.zeroli.model.User;
+import startup.zeroli.utils.ErrDialog;
 import startup.zeroli.common.Status;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
-import startup.zeroli.utils.ErrDialog;
 
 public class ProductReviewServiceImpl implements ProductReviewService {
 
+    private final GenericDAO<ProductReview> productReviewDAO;
+    private final EntityManager entityManager;
 
-    private static final String FILE_PATH = "D:\\code\\University\\ZeroLi\\src\\main\\java\\startup\\zeroli\\service\\productView\\productReview";
-    @Override
-    public List<ProductReview> getAllProductReview() {
-        List<ProductReview> listReviews = new ArrayList<>();
-        ProductReview review = new ProductReview();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-                String[] data = line.split("\\|\\|");
-                listReviews.add(new ProductReview(
-                        Integer.parseInt(data[0].trim()),
-                        Integer.parseInt(data[1].trim()),
-                        data[2].trim(),
-                        Integer.parseInt(data[3].trim()),
-                        data[4].trim(),
-                        review.setStatusFromString(data[5].trim())));
-            }
-        } catch (IOException e) {
-            ErrDialog.showError(e.getMessage());
-        }
-        return listReviews;
-    }
-
-    public List<ProductReview> getReviewsByProductId(int productId) {
-        List<ProductReview> listReviews = getAllProductReview();
-        List<ProductReview> productReviews = new ArrayList<>();
-
-        for (ProductReview review : listReviews) {
-            if (review.getProductId() == productId && review.getStatus() == Status.ACTIVE) {
-                productReviews.add(review);
-            }
-        }
-        return productReviews;
+    public ProductReviewServiceImpl() {
+        this.productReviewDAO = new GenericDAO<>(ProductReview.class);
+        this.entityManager = productReviewDAO.getEntityManager();
     }
 
     @Override
-    public void addProductReview(ProductReview pr) {
-        List<ProductReview> listReviews = getAllProductReview();
-
-        int nextId = listReviews.isEmpty() ? 1 : listReviews.get(listReviews.size() - 1).getViewId() + 1;
-
-        pr.setViewId(nextId);
-        //tham số true có ý nghĩa là mở file ở chế độ "append" (thêm vào cuối file)
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            listReviews.add(pr);
-            bw.write(nextId + " || "
-                    + pr.getProductId() + " || "
-                    + pr.getUserName() + " || "
-                    + pr.getRating() + " || "
-                    + pr.getContent() + " || "
-                    + pr.getStatus() + "\n"
-            );
+    public List<ProductReview> getAllActiveReviews() {
+        try {
+            String jpql = "SELECT r FROM ProductReview r WHERE r.status = :status";
+            return entityManager.createQuery(jpql, ProductReview.class)
+                    .setParameter("status", Status.ACTIVE)
+                    .getResultList();
         } catch (Exception e) {
-            ErrDialog.showError(e.getMessage());
+            ErrDialog.showError("Failed to fetch reviews: " + e.getMessage());
+            return List.of();
         }
     }
 
     @Override
-    public void updateProductReview(ProductReview pr) {
-        List<ProductReview> listReviews = getAllProductReview();
-        boolean isUpdated = false;
-
-        for (ProductReview review : listReviews) {
-            if (review.getViewId() == pr.getViewId()) {
-                review.setRating(pr.getRating());
-                review.setContent(pr.getContent());
-                isUpdated = true;
-                break;
-            }
-        }
-
-        if (isUpdated) {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-                for (ProductReview review : listReviews) {
-                    bw.write(review.getViewId() + " || "
-                            + review.getProductId() + " || "
-                            + review.getUserName() + " || "
-                            + review.getRating() + " || "
-                            + review.getContent() + " || "
-                            + review.getStatus() + "\n");
-                }
-            } catch (IOException e) {
-                ErrDialog.showError(e.getMessage());
-            }
-        } else {
-            System.out.println("Không tìm thấy nhận xét với viewId = " + pr.getViewId());
+    public ProductReview getReviewById(int viewId) {
+        try {
+            return productReviewDAO.findById(viewId);
+        } catch (Exception e) {
+            ErrDialog.showError("Review not found: " + e.getMessage());
+            return null;
         }
     }
 
     @Override
-    public void deleteProductReview(int id) {
-        List<ProductReview> listReviews = getAllProductReview();
-        boolean isUpdated = false;
-
-        for (ProductReview review : listReviews) {
-            if (review.getViewId() == id) {
-                review.setStatus(Status.INACTIVE);
-                isUpdated = true;
-                break;
-            }
-        }
-
-        if (isUpdated) {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-                for (ProductReview review : listReviews) {
-                    bw.write(review.getViewId() + " || "
-                            + review.getProductId() + " || "
-                            + review.getUserName() + " || "
-                            + review.getRating() + " || "
-                            + review.getContent() + " || "
-                            + review.getStatus() + "\n");
-                }
-            } catch (IOException e) {
-                ErrDialog.showError(e.getMessage());
-            }
-        } else {
-            System.out.println("Không tìm thấy nhận xét với viewId = " + id);
+    public List<ProductReview> getReviewsByProductId(int productId) {
+        try {
+            String jpql = "SELECT r FROM ProductReview r JOIN FETCH r.user " +
+                         "WHERE r.productId = :productId AND r.status = :status " +
+                         "ORDER BY r.viewId DESC";
+            return entityManager.createQuery(jpql, ProductReview.class)
+                    .setParameter("productId", productId)
+                    .setParameter("status", Status.ACTIVE)
+                    .getResultList();
+        } catch (Exception e) {
+            ErrDialog.showError("Failed to fetch product reviews: " + e.getMessage());
+            return List.of();
         }
     }
 
-    private void writeToFile(List<ProductReview> reviews) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (ProductReview review : reviews) {
-                writer.write(review.getViewId() + " || "
-                        + review.getProductId() + " || "
-                        + review.getRating() + " || \""
-                        + review.getContent() + "\" || "
-                        + review.getStatus() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public boolean addProductReview(int productId, User user, int rating, String content) {
+        try {
+            ProductReview review = new ProductReview(productId, user, rating, content);
+            productReviewDAO.save(review);
+            return true;
+        } catch (Exception e) {
+            ErrDialog.showError("Failed to add review: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean addProductReview(ProductReview review) {
+        try {
+            productReviewDAO.save(review);
+            return true;
+        } catch (Exception e) {
+            ErrDialog.showError("Failed to add review: " + e.getMessage());
+            return false;
         }
     }
 
-    public static void main(String[] args) {
+    @Override
+    public boolean updateProductReview(int reviewId, int newRating, String newContent) {
+        try {
+            ProductReview review = productReviewDAO.findById(reviewId);
+            if (review != null) {
+                review.setRating(newRating);
+                review.setContent(newContent);
+                productReviewDAO.update(review);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            ErrDialog.showError("Failed to update review: " + e.getMessage());
+            return false;
+        }
+    }
 
-        ProductReview pr = new ProductReview(1, 1, 5, "ZOkkkk");
-        ProductReview pr1 = new ProductReview(1, "HUHUHU", 5, "OKKKKK!");
-        ProductReviewServiceImpl impl = new ProductReviewServiceImpl();
-        impl.updateProductReview(pr);
+    @Override
+    public boolean deleteProductReview(int id) {
+        try {
+            ProductReview review = productReviewDAO.findById(id);
+            if (review != null) {
+                review.deleteReview();
+                productReviewDAO.update(review);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            ErrDialog.showError("Failed to delete review: " + e.getMessage());
+            return false;
+        }
+    }
 
+    @Override
+    public boolean hasUserReviewedProduct(int userId, int productId) {
+        try {
+            String jpql = "SELECT COUNT(r) FROM ProductReview r " +
+                          "WHERE r.user.id = :userId AND r.productId = :productId AND r.status = :status";
+            Long count = entityManager.createQuery(jpql, Long.class)
+                    .setParameter("userId", userId)
+                    .setParameter("productId", productId)
+                    .setParameter("status", Status.ACTIVE)
+                    .getSingleResult();
+            return count > 0;
+        } catch (Exception e) {
+            ErrDialog.showError("Failed to check user review: " + e.getMessage());
+            return false;
+        }
     }
 }

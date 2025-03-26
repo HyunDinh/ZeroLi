@@ -1,48 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package startup.zeroli.service.product;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import startup.zeroli.dal.GenericDAO;
 import startup.zeroli.model.Product;
 import startup.zeroli.utils.ErrDialog;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-/**
- *
- * @author LENOVO
- */
 public class ProductServiceImpl implements ProductService {
 
-    private static final String filePath = "D:\\code\\University\\ZeroLi\\src\\main\\java\\startup\\zeroli\\service\\product\\product";
+    private final GenericDAO<Product> productDAO;
 
     public ProductServiceImpl() {
+        this.productDAO = new GenericDAO<>(Product.class);
     }
 
     @Override
     public Map<Integer, Product> getAllProducts() {
         Map<Integer, Product> productMap = new HashMap<>();
-        Product product = new Product();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-                String[] parts = line.split("\\|");
-                productMap.put(Integer.parseInt(parts[0]), new Product(Integer.parseInt(parts[0]),
-                        parts[1], parts[2],
-                        BigDecimal.valueOf(Double.parseDouble(parts[3])),
-                        Integer.parseInt(parts[4]),
-                        product.setProductStatusFromString(parts[5]),
-                        parts[6],
-                        parts[7])
-                );
-            }
+        try {
+            List<Product> productList = productDAO.findAll();
+            productMap = productList.stream().collect(Collectors.toMap(Product::getProductId, p -> p));
         } catch (Exception e) {
             ErrDialog.showError(e.getMessage());
         }
@@ -51,33 +30,48 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(int id) {
-        Map<Integer, Product> productMap = getAllProducts();
-        return productMap.get(id);
+        try {
+            return productDAO.findById(id);
+        } catch (Exception e) {
+            ErrDialog.showError("Error At Function : getProductByID - " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public Map<Integer, Product> searchProductsByName(String name) {
-        Map<Integer, Product> productMap = getAllProducts();
-        Map<Integer, Product> listProductByName = new HashMap<>();
-        for (Map.Entry<Integer, Product> entry : productMap.entrySet()) {
-            Integer id = entry.getKey();
-            Product p = entry.getValue();
-            if (p.getProductName().toLowerCase().contains(name.toLowerCase())) {
-                listProductByName.put(id, p);
-            }
-        }
-        return listProductByName;
+        return getAllProducts().entrySet().stream()
+                .filter(entry -> entry.getValue().getProductName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    public void saveProduct(Product product) {
+        try {
+            productDAO.save(product);
+        } catch (Exception e) {
+            ErrDialog.showError(e.getMessage());
+        }
+    }
+
+    public void updateProduct(Product product) {
+        try {
+            productDAO.update(product);
+        } catch (Exception e) {
+            ErrDialog.showError(e.getMessage());
+        }
+    }
+
+    public void deleteProduct(int id) {
+        try {
+            productDAO.delete(id);
+        } catch (Exception e) {
+            ErrDialog.showError(e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         ProductServiceImpl impl = new ProductServiceImpl();
         Map<Integer, Product> list = impl.searchProductsByName("le");
-        for (Map.Entry<Integer, Product> entry : list.entrySet()) {
-            Object key = entry.getKey();
-            Object val = entry.getValue();
-            System.out.println(val);
-        }
+        list.values().forEach(System.out::println);
     }
-
 }

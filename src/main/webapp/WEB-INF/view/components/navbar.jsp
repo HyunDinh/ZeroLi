@@ -14,16 +14,16 @@
         </a>
 
         <ul class="nav-links">
-            <li><a href="#" class="active">HomePage</a></li>
-            <li><a href="#">Friends</a></li>
+            <li><a href="<%= ProjectPaths.HREF_TO_HOMEPAGE %>">HomePage</a></li>
+            <li><a href="<%= ProjectPaths.HREF_TO_FRIENDPAGE %>">Friends</a></li>
             <li class="dropdown-icon">
                 <a href="#">BookCase
                     <ion-icon name="caret-down-outline" style="margin-bottom: -4px;"></ion-icon>
                 </a>
                 <div class="dropdown">
                     <div class="dropdown-category">
-                        <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE %>">Books</a>
-                        <a href="<%= ProjectPaths.HREF_TO_CANVASPAGE %>">Canvas</a>
+                        <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE%>">Books</a>
+                        <a href="<%= ProjectPaths.HREF_TO_CANVASPAGE%>">Canvas</a>
                         <a href="#">Showroom</a>
                     </div>
                 </div>
@@ -33,8 +33,8 @@
                 </a>
                 <div class="dropdown">
                     <div class="dropdown-category">
-                        <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE %>">Products</a>
-                        <a href="<%= ProjectPaths.HREF_TO_SERVICE %>">Services</a>
+                        <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE%>">Products</a>
+                        <a href="<%= ProjectPaths.HREF_TO_SERVICE%>">Services</a>
                         <a href="#">AI-Service</a>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 </a>
                 <div class="dropdown">
                     <div class="dropdown-category">
-                        <a href="#">Profile</a>
+                        <a href="<%= ProjectPaths.HREF_TO_PROFILEPAGE%>">Profile</a>
                         <a href="#">Shopping Cart</a>
                         <a href="#">History</a>
                     </div>
@@ -57,7 +57,7 @@
         <div class="icons">
             <a href="#"><ion-icon name="search-outline"></ion-icon></a>
             <!-- Icon specifically for login -->
-            <a href="<%= ProjectPaths.HREF_TO_LOGINPAGE %>"><ion-icon name="person-circle-outline"></ion-icon></a>
+            <a href="<%= ProjectPaths.HREF_TO_LOGINPAGE%>"><ion-icon name="person-circle-outline"></ion-icon></a>
         </div>
     </div>
 </header>
@@ -69,12 +69,8 @@
         box-sizing: border-box;
         font-family: Arial, sans-serif;
     }
-
     .header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+        position: relative;
         z-index: 1000;
         background: transparent;
         padding: 10px 20px;

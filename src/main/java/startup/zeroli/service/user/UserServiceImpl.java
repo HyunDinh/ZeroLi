@@ -22,10 +22,17 @@ public class UserServiceImpl implements UserService {
             return userDAO.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
-
         } catch (Exception e) {
             return null;
         }
     }
-
+    
+    @Override
+    public User getUserById(Long id) {
+        try {
+            return userDAO.find(User.class, id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

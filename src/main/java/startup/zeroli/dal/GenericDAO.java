@@ -29,6 +29,15 @@ public class GenericDAO<T> extends BaseDAO {
             em.close();
         }
     }
+    
+    public T findById(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(entityClass, id);
+        } finally {
+            em.close();
+        }
+    }
 
     public void save(T entity) {
         EntityManager em = getEntityManager();
@@ -54,6 +63,20 @@ public class GenericDAO<T> extends BaseDAO {
     }
 
     public void delete(String id) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            T entity = em.find(entityClass, id);
+            if (entity != null) {
+                em.remove(entity);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void delete(int id) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();

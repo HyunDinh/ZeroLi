@@ -6,17 +6,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import startup.zeroli.config.ProjectPaths;
 import startup.zeroli.controller.mainController.MainControllerServlet;
 import startup.zeroli.model.Product;
 import startup.zeroli.model.ProductReview;
+import startup.zeroli.model.User;
 import startup.zeroli.service.product.ProductServiceImpl;
 import startup.zeroli.service.product.ProductService;
 import startup.zeroli.service.productView.ProductReviewService;
 import startup.zeroli.service.productView.ProductReviewServiceImpl;
-import startup.zeroli.utils.ErrDialog;
 
 /**
  *
@@ -122,25 +123,34 @@ public class ProductPageServlet extends HttpServlet {
 
     private void addProductReview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(true);
+        User u = (User) session.getAttribute(MainControllerServlet.SS_ATTR_USER);
         int productId = Integer.parseInt(request.getParameter("productId"));
-        String userName = request.getParameter("userName");
         int rating = Integer.parseInt(request.getParameter("rating"));
         String comment = request.getParameter("comment");
-        ProductReview productReview = new ProductReview(productId, userName, rating, comment);
+        ProductReview productReview = new ProductReview(productId, u, rating, comment);
         productReviewServiceImpl.addProductReview(productReview);
-
         response.sendRedirect(ProjectPaths.HREF_TO_PRODUCTPAGE + "&id=" + productId);
     }
 
     private void updateProductReview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int viewId = Integer.parseInt(request.getParameter("viewId"));
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int rating = Integer.parseInt(request.getParameter("rating"));
-        String newContent = request.getParameter("newContent");
-        ProductReview pr = new ProductReview(viewId, productId, rating, newContent);
-        productReviewServiceImpl.updateProductReview(pr);
-        response.sendRedirect(ProjectPaths.HREF_TO_PRODUCTPAGE + "&id=" + productId);
+        try {
+            int viewId = Integer.parseInt(request.getParameter("viewId"));
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            int rating = Integer.parseInt(request.getParameter("rating"));
+            String newContent = request.getParameter("newContent");
+
+            // Cập nhật vào database
+            productReviewServiceImpl.updateProductReview(viewId, rating, newContent);
+
+            response.sendRedirect(ProjectPaths.HREF_TO_PRODUCTPAGE + "&id=" + productId);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Dữ liệu không hợp lệ");
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi hệ thống");
+        }
     }
 
     private void deleteProductReview(HttpServletRequest request, HttpServletResponse response)
@@ -148,7 +158,7 @@ public class ProductPageServlet extends HttpServlet {
         int viewId = Integer.parseInt(request.getParameter("viewId"));
         int productId = Integer.parseInt(request.getParameter("productId"));
         productReviewServiceImpl.deleteProductReview(viewId);
-        
+
         response.sendRedirect(ProjectPaths.HREF_TO_PRODUCTPAGE + "&id=" + productId);
     }
 

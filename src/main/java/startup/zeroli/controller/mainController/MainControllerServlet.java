@@ -21,6 +21,7 @@ public class MainControllerServlet extends HttpServlet {
     public static final String BOOKPAGE_REDIRECT = "bookPage";
     public static final String SERVICE_REDIRECT = "servicePage";
     public static final String CANVASPAGE_REDIRECT = "CanvasPage";
+    public static final String PROFILEPAGE_REDIRECT = "profilePage";
 
     // redirect to each servlets
     public static final String HOMEPAGE_SERVLET = "/" + HOMEPAGE_REDIRECT;
@@ -29,6 +30,7 @@ public class MainControllerServlet extends HttpServlet {
     public static final String BOOKPAGE_SERVLET = "/" + BOOKPAGE_REDIRECT;
     public static final String SERVICEPAGE_SERVLET = "/" + SERVICE_REDIRECT;
     public static final String CANVASPAGE_SERVLET = "/" + CANVASPAGE_REDIRECT;
+    public static final String PROFILEPAGAE_SERVLET = "/" + PROFILEPAGE_REDIRECT;
 
     // main?action=
     // post (Action)
@@ -36,6 +38,7 @@ public class MainControllerServlet extends HttpServlet {
     public static final String ACTION_ADDREVIEW = "add-review"; // product
     public static final String ACTION_UPDATEREVIEW = "update-review"; // product 
     public static final String ACTION_DELETEREVIEW = "delete-review"; // product
+    public static final String ACTION_UPDATE_AVATAR_USER = "update-avatar-user"; // profile
 
     // get (Action)
     public static final String ACTION_SEARCHPRODUCT = "search-product"; // product
@@ -56,9 +59,10 @@ public class MainControllerServlet extends HttpServlet {
         switch (action) {
             case ACTION_LOGIN ->
                 request.getRequestDispatcher(LOGINPAGE_REDIRECT).forward(request, response);
-            case ACTION_ADDREVIEW, ACTION_UPDATEREVIEW, ACTION_DELETEREVIEW -> {
+            case ACTION_ADDREVIEW, ACTION_UPDATEREVIEW, ACTION_DELETEREVIEW -> 
                 request.getRequestDispatcher(PRODUCTPAGE_REDIRECT).forward(request, response);
-            }
+            case ACTION_UPDATE_AVATAR_USER ->
+                request.getRequestDispatcher(PROFILEPAGE_REDIRECT).forward(request, response);
             default ->
                 response.sendRedirect("errorAtMainController.jsp");
         }
@@ -69,7 +73,7 @@ public class MainControllerServlet extends HttpServlet {
         // chuyen huong / tac vu don gian
         String action = request.getParameter("action");
         switch (action) {
-            case HOMEPAGE_REDIRECT, LOGINPAGE_REDIRECT, PRODUCTPAGE_REDIRECT, SERVICE_REDIRECT, BOOKPAGE_REDIRECT, CANVASPAGE_REDIRECT ->
+            case HOMEPAGE_REDIRECT, LOGINPAGE_REDIRECT, PRODUCTPAGE_REDIRECT, SERVICE_REDIRECT, BOOKPAGE_REDIRECT, CANVASPAGE_REDIRECT, PROFILEPAGE_REDIRECT ->
                 request.getRequestDispatcher(action).forward(request, response);
             case ACTION_SEARCHPRODUCT ->
                 request.getRequestDispatcher(PRODUCTPAGE_REDIRECT).forward(request, response);

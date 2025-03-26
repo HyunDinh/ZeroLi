@@ -6,6 +6,8 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>startup.zeroli.model.User</class>
+        <class>startup.zeroli.model.Product</class>
+        <class>startup.zeroli.model.ProductReview</class>
         
         <properties>
             <!-- Cấu hình kết nối SQL Server -->

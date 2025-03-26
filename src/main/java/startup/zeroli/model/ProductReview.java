@@ -1,80 +1,56 @@
 package startup.zeroli.model;
 
+import jakarta.persistence.*;
 import startup.zeroli.common.Status;
 
+@Entity
+@Table(name = "product_review")
 public class ProductReview {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "view_id")
     private int viewId;
+
+    @Column(name = "product_id", nullable = false)
     private int productId;
-    private String userName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
+
+    @Column(name = "rating", nullable = false)
     private int rating;
+
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
-    private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status = Status.ACTIVE;
 
     public ProductReview() {
     }
 
-    public ProductReview(int viewId, int productId, String userName, int rating, String content, Status status) {
-        this.viewId = viewId;
+    public ProductReview(int productId, User user, int rating, String content) {
         this.productId = productId;
-        this.userName = userName;
+        this.user = user;
         this.rating = rating;
         this.content = content;
-        this.status = status;
     }
 
-    public ProductReview(int viewId, int productId, int rating, String content, Status status) {
-        this.viewId = viewId;
-        this.productId = productId;
-        this.rating = rating;
-        this.content = content;
-        this.status = status;
+    // Các getter và setter cần thay đổi
+    public User getUser() {
+        return user;
     }
 
-    public ProductReview(int productId, int rating, String content) {
-        this.productId = productId;
-        this.rating = rating;
-        this.content = content;
-        this.status = Status.ACTIVE;
-    }
-    
-    public ProductReview(int productId, String userName, int rating, String content) {
-        this.productId = productId;
-        this.userName = userName;
-        this.rating = rating;
-        this.content = content;
-        this.status = Status.ACTIVE;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public ProductReview(int viewId, int productId, String userName, int rating, String content) {
-        this.viewId = viewId;
-        this.productId = productId;
-        this.userName = userName;
-        this.rating = rating;
-        this.content = content;
-        this.status = Status.ACTIVE;
-    }
-
-    public ProductReview(int viewId, int productId, int rating, String content) {
-        this.viewId = viewId;
-        this.productId = productId;
-        this.rating = rating;
-        this.content = content;
-        this.status = Status.ACTIVE;
-    }
-
-    public ProductReview(int rating, String content) {
-        this.rating = rating;
-        this.content = content;
-        //this.status = Status.ACTIVE;               
-    }
-
+    // Giữ nguyên các phương thức khác...
     public int getViewId() {
         return viewId;
-    }
-
-    public void setViewId(int viewId) {
-        this.viewId = viewId;
     }
 
     public int getProductId() {
@@ -113,27 +89,20 @@ public class ProductReview {
         this.status = Status.INACTIVE;
     }
 
-    public Status setStatusFromString(String statusString) {
+    public void setStatusFromString(String statusString) {
         try {
             this.status = Status.valueOf(statusString.toUpperCase());
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid status: " + statusString);
             this.status = Status.ACTIVE;
         }
-        return this.status;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     @Override
     public String toString() {
-        return "ProductReview{" + "viewId=" + viewId + ", productId=" + productId + ", userName=" + userName + ", rating=" + rating + ", content=" + content + ", status=" + status + '}';
+        return "ProductReview{" + "viewId=" + viewId + ", productId=" + productId
+                + ", user=" + (user != null ? user.getUsername() : "null")
+                + ", rating=" + rating + ", content='" + content + '\''
+                + ", status=" + status + '}';
     }
-
 }

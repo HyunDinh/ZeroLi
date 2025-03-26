@@ -7,16 +7,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Product</title>
-        <!-- Font Awesome -->        
+        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     </head>
     <body>
         <!-- Nhúng Navbar -->
-        <div>
-            <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response); %>
-        </div>
+        <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response);%>
 
+        <a href="#" id="title" ><h1>Sản phẩm máy tính</h1></a>
         <!-- Nội dung chính -->
         <div class="content-wrapper">
             <!-- Form tìm kiếm -->
@@ -58,6 +58,7 @@
 
 <style>
     /* CSS chung */
+    @import url('https://fonts.googleapis.com/css2?family=Playball&display=swap');
     * {
         margin: 0;
         padding: 0;
@@ -65,13 +66,23 @@
         font-family: Arial, sans-serif;
     }
 
+    #title{
+        text-align: center;
+        text-decoration: none;
+        color: black;
+    }
+    #title h1{
+        margin: 30px 0 0 0 ;
+        font-size: 3.5rem;
+        font-family: "Playball";
+    }
     body {
         background-color: #f4f4f4;
         min-height: 100vh;
     }
 
     .content-wrapper {
-        padding-top: 150px;
+        padding-top: 50px;
         padding-bottom: 50px;
         max-width: 1200px;
         margin: 0 auto;
@@ -137,6 +148,8 @@
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); /* Shadow giống hình */
         transition: all 0.3s ease; /* Hiệu ứng mượt mà */
         overflow: hidden;
+        border: 1px solid black;
+        padding: 10px;
     }
 
     .product-card:hover {
@@ -237,13 +250,13 @@
     .search-product {
         display: flex;
         align-items: center;
-        border: 2px solid #ff4d4f; /* Red border similar to Shopee */
+        border: 1px solid black; /* Red border similar to Shopee */
         border-radius: 8px; /* Rounded corners */
         overflow: hidden; /* Ensure the border-radius applies to children */
         background-color: #fff; /* White background */
         width: 100%; /* Adjust as needed */
-        max-width: 600px; /* Similar width to the image */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        margin-bottom: 25px;
     }
 
     /* Style the input field */
@@ -264,25 +277,35 @@
 
     /* Style the button */
     .search-product button {
-        background-color: #ff4d4f; /* Red background for the button */
-        border: none; /* Remove default border */
+        background-color: white; /* Red background for the button */
+        border-radius: 8px;
+        border: 1px solid black; /* Remove default border */
         padding: 10px 15px; /* Padding for the button */
         cursor: pointer; /* Pointer cursor on hover */
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 10px;
         transition: background-color 0.3s ease; /* Smooth hover effect */
     }
 
     /* Style the icon inside the button */
     .search-product button i {
-        color: #fff; /* White icon color */
+        color: black; /* White icon color */
         font-size: 18px; /* Icon size */
+    }
+
+    .search-product button i:hover {
+        color: white; /* White icon color */
+        transform: scale(1.1);
+
     }
 
     /* Hover effect for the button */
     .search-product button:hover {
-        background-color: #e63946; /* Slightly darker red on hover */
+        background-color: black; /* Slightly darker red on hover */
+        color: white;
+        opacity: 0.8;
     }
     /* Responsive Design */
     @media (max-width: 768px) {
