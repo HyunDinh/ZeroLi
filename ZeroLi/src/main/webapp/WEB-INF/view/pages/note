@@ -1,0 +1,213 @@
+
+<button action="main" method="get" class="view-cart-btn">
+                            <input type="hidden" name="action" value="viewCart">
+                            Xem Giỏ Hàng
+                        </button>
+    <p class="total">Tổng: <fmt:formatNumber value="${product.price.multiply(new java.math.BigDecimal(quantity))}" type="number" groupingUsed="true" maxFractionDigits="0" /> VNĐ</p>
+    
+     <!-- Tóm tắt đơn hàng -->
+                    <div class="summary-details">
+                        <p>Tổng tạm tính <span><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" maxFractionDigits="0" /> VNĐ</span></p>
+                        <p>Phí vận chuyển <span>25.000 VNĐ</span></p>
+                        <p class="total">Thành tiền <span><fmt:formatNumber value="${totalPrice.add(new java.math.BigDecimal('25000'))}" type="number" groupingUsed="true" maxFractionDigits="0" /> VNĐ</span></p>
+                        <a href="${pageContext.request.contextPath}/cart?action=checkout" class="checkout-btn">Thanh toán</a>
+                    </div>
+
+
+khoanc2304   ê a lên trg đã tí lên trg nói tiếp vô học r aloalaoaoaofafa
+
+<div class="voucher-section">
+                                        <div class="voucher-card">
+                                            <span class="voucher-text">Zeroli-Shop</span>
+                                            <a href="#" class="voucher-btn" onclick="toggleVoucherOptions(event, 'voucher-options-${product.name}', this)">
+                                                <span>Chọn Voucher</span>
+                                                <span class="toggle-icon"></span>
+                                            </a>
+                                        </div>
+                                        <div class="voucher-options" id="voucher-options-${product.name}">
+                                            <c:choose>
+                                                <c:when test="${product.price >= 10000000 && product.price <= 19999999}">
+                                                    <div class="voucher-option">
+                                                        <span>Giảm 3% cho đơn hàng từ 10.000.000 VNĐ đến 19.999.999 VNĐ</span>
+                                                        <div class="voucher-action-buttons">
+                                                            <a href="#" class="voucher-action-btn apply" onclick="toggleVoucher(event, this, 'Giảm 3% cho đơn hàng từ 10.000.000 VNĐ đến 19.999.999 VNĐ', 'voucher-options-${product.name}')">+</a>
+                                                            <a href="#" class="voucher-action-btn cancel" onclick="toggleVoucher(event, this, 'Giảm 3% cho đơn hàng từ 10.000.000 VNĐ đến 19.999.999 VNĐ', 'voucher-options-${product.name}')">−</a>
+                                                        </div>
+                                                    </div>
+                                                </c:when>
+                                                <c:when test="${product.price >= 20000000 && product.price <= 29999999}">
+                                                    <div class="voucher-option">
+                                                        <span>Giảm 5% cho đơn hàng từ 20.000.000 VNĐ đến 29.999.999 VNĐ</span>
+                                                        <div class="voucher-action-buttons">
+                                                            <a href="#" class="voucher-action-btn apply" onclick="toggleVoucher(event, this, 'Giảm 5% cho đơn hàng từ 20.000.000 VNĐ đến 29.999.999 VNĐ', 'voucher-options-${product.name}')">+</a>
+                                                            <a href="#" class="voucher-action-btn cancel" onclick="toggleVoucher(event, this, 'Giảm 5% cho đơn hàng từ 20.000.000 VNĐ đến 29.999.999 VNĐ', 'voucher-options-${product.name}')">−</a>
+                                                        </div>
+                                                    </div>
+                                                </c:when>
+                                                <c:when test="${product.price >= 30000000 && product.price <= 49999999}">
+                                                    <div class="voucher-option">
+                                                        <span>Giảm 7% cho đơn hàng từ 30.000.000 VNĐ đến 49.999.999 VNĐ</span>
+                                                        <div class="voucher-action-buttons">
+                                                            <a href="#" class="voucher-action-btn apply" onclick="toggleVoucher(event, this, 'Giảm 7% cho đơn hàng từ 30.000.000 VNĐ đến 49.999.999 VNĐ', 'voucher-options-${product.name}')">+</a>
+                                                            <a href="#" class="voucher-action-btn cancel" onclick="toggleVoucher(event, this, 'Giảm 7% cho đơn hàng từ 30.000.000 VNĐ đến 49.999.999 VNĐ', 'voucher-options-${product.name}')">−</a>
+                                                        </div>
+                                                    </div>
+                                                </c:when>
+                                                <c:when test="${product.price > 50000000}">
+                                                    <div class="voucher-option">
+                                                        <span>Giảm 10% cho đơn hàng trên 50.000.000 VNĐ</span>
+                                                        <div class="voucher-action-buttons">
+                                                            <a href="#" class="voucher-action-btn apply" onclick="toggleVoucher(event, this, 'Giảm 10% cho đơn hàng trên 50.000.000 VNĐ', 'voucher-options-${product.name}')">+</a>
+                                                            <a href="#" class="voucher-action-btn cancel" onclick="toggleVoucher(event, this, 'Giảm 10% cho đơn hàng trên 50.000.000 VNĐ', 'voucher-options-${product.name}')">−</a>
+                                                        </div>
+                                                    </div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="voucher-option">
+                                                        <span>Không có voucher cho sản phẩm này</span>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <div class="voucher-actions">
+                                                <a href="#" class="btn-cancel" onclick="cancelVoucherSelection(event, 'voucher-options-${product.name}')">Hủy</a>
+                                                <a href="${pageContext.request.contextPath}/cart" class="btn-confirm" onclick="applyVoucher(event, 'voucher-options-${product.name}')">Đồng ý</a>
+                                            </div>
+                                        </div>
+                                        <div class="applied-voucher" id="applied-voucher-${product.name}"></div>
+                                    </div>
+
+
+<div class="btn-container">
+                                <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE%>&id=${entry.value.productId}" class="btn btn-buy">Xem Chi Tiết</a>
+                                <a href="#" class="btn btn-cart" onclick="addToCart('${entry.value.productName}', ${entry.value.price}, '${entry.value.imageURL}')"><i class="fas fa-cart-plus"></i> Mua Ngay</a>
+                            </div>
+
+
+<div class="col-md-4">
+        <div class="summary-details">
+          <p>Tổng tạm tính <span><fmt:formatNumber value="${sessionScope.cartService.totalPrice}" type="currency" currencySymbol="" groupingUsed="true" maxFractionDigits="0" /> VNĐ</span></p>
+          <p>Phí vận chuyển <span>25.000 VNĐ</span></p>
+          <p class="total">Thành tiền <span><fmt:formatNumber value="${sessionScope.cartService.totalPrice + 25000}" type="currency" currencySymbol="" groupingUsed="true" maxFractionDigits="0" /> VNĐ</span></p>
+        </div>
+        <a href="checkout" class="btn checkout-btn">Thanh toán</a>
+      </div>
+
+
+
+<script>
+    let cartItems = [];
+
+    function addToCart(productName, price, imageURL) {
+        cartItems.push({name: productName, price: price, image: imageURL});
+
+        const cartCount = document.querySelector('.cart-count');
+        cartCount.textContent = cartItems.length;
+        cartCount.style.display = cartItems.length > 0 ? 'block' : 'none';
+
+        const cartItemsContainer = document.querySelector('.cart-items');
+        cartItemsContainer.innerHTML = '';
+
+        cartItems.forEach(item => {
+            const cartItem = document.createElement('div');
+            cartItem.classList.add('cart-item');
+            cartItem.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <p>${item.name}</p>
+                    <span>₫${item.price.toLocaleString()}</span>
+                </div>
+            `;
+            cartItemsContainer.appendChild(cartItem);
+        });
+
+        sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+        // Gọi hàm thông báo thành công
+        addToCartSuccess(productName);
+    }
+
+    function addToCartSuccess(productName) {
+        const toast = document.createElement('div');
+        toast.classList.add('toast-notification');
+        toast.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>Đã thêm "${productName}" vào giỏ hàng thành công!</span>
+        `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 3000);
+    }
+
+    window.onload = function () {
+        const savedCart = sessionStorage.getItem('cartItems');
+        if (savedCart) {
+            cartItems = JSON.parse(savedCart);
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = cartItems.length;
+            cartCount.style.display = cartItems.length > 0 ? 'block' : 'none';
+
+            const cartItemsContainer = document.querySelector('.cart-items');
+            cartItems.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <p>${item.name}</p>
+                        <span>₫${item.price.toLocaleString()}</span>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+
+        const cartForms = document.querySelectorAll('.btn-cart-form');
+        cartForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const productName = form.querySelector('input[name="productName"]').value;
+                const price = parseFloat(form.querySelector('input[name="price"]').value);
+                const imageURL = form.querySelector('input[name="imageURL"]').value;
+
+                addToCart(productName, price, imageURL);
+
+                setTimeout(() => {
+                    form.submit();
+                }, 100);
+            });
+        });
+    };
+
+    function validateForm() {
+        const minPrice = document.getElementById("minPrice")?.value;
+        const maxPrice = document.getElementById("maxPrice")?.value;
+
+        if (minPrice !== "" && maxPrice !== "") {
+            if (parseFloat(minPrice) > parseFloat(maxPrice)) {
+                alert("Giá thấp nhất không thể lớn hơn giá cao nhất!");
+                return false;
+            }
+        }
+
+        if (minPrice !== "" && parseFloat(minPrice) < 0) {
+            alert("Giá thấp nhất không thể nhỏ hơn 0!");
+            return false;
+        }
+        if (maxPrice !== "" && parseFloat(maxPrice) < 0) {
+            alert("Giá cao nhất không thể nhỏ hơn 0!");
+            return false;
+        }
+
+        return true;
+    }
+</script>
