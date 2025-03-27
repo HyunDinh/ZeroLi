@@ -47,7 +47,7 @@
                 <div class="dropdown">
                     <div class="dropdown-category">
                         <a href="<%= ProjectPaths.HREF_TO_PROFILEPAGE%>">Profile</a>
-                        <a href="#">Shopping Cart</a>
+                        <a href="<%= ProjectPaths.HREF_TO_CARTPAGE %>">Shopping Cart</a>
                         <a href="#">History</a>
                     </div>
                 </div>

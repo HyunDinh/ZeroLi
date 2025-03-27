@@ -7,7 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Product</title>
-        <!-- Font Awesome -->
+        <!-- Font Awesome -->        
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -45,7 +45,14 @@
                             </p>
                             <div class="btn-container">
                                 <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE%>&id=${entry.value.productId}" class="btn btn-buy">Xem Chi Tiết</a>
-                                <a href="#" class="btn btn-cart"><i class="fas fa-cart-plus"></i> Mua Ngay</a>
+                                <form action="main" method="POST" class="btn-cart-form">
+                                    <input type="hidden" name="action" value="add-items">
+                                    <input type="hidden" name="productId" value="${entry.value.productId}">
+                                    <input type="hidden" name="productName" value="${entry.value.productName}">
+                                    <input type="hidden" name="price" value="${entry.value.price}">
+                                    <input type="hidden" name="imageURL" value="${entry.value.imageURL}">
+                                    <button type="submit" class="btn btn-cart"><i class="fas fa-cart-plus"></i>Thêm Vào Giỏ Hàng</button>
+                                </form>
                             </div>
                         </div>
                     </div>

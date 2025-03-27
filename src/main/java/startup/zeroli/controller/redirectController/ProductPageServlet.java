@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import startup.zeroli.config.AbsolutePaths;
 import startup.zeroli.config.ProjectPaths;
 import startup.zeroli.controller.mainController.MainControllerServlet;
 import startup.zeroli.model.Product;
@@ -89,6 +91,7 @@ public class ProductPageServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu tham số id của product");
             return;
         }
+
         int id;
         try {
             id = Integer.parseInt(idParam);
@@ -96,12 +99,27 @@ public class ProductPageServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID không hợp lệ");
             return;
         }
+
         Product product = productServiceImpl.getProductById(id);
         List<ProductReview> reviews = productReviewServiceImpl.getReviewsByProductId(id);
+
         if (product == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy product");
             return;
         }
+
+        // Xử lý avatar cho từng review
+        for (ProductReview review : reviews) {
+            String email = review.getUser().getEmail();
+            String safeEmailKey = email.replace("@", "_at_");
+            String avatarPath = AbsolutePaths.AVATAR_DIR + email + ".png";
+            File avatarFile = new File(avatarPath);
+
+            request.setAttribute("avatarExists_" + safeEmailKey, avatarFile.exists());
+            request.setAttribute("lastModified_" + safeEmailKey,
+                    avatarFile.exists() ? avatarFile.lastModified() : System.currentTimeMillis());
+        }
+
         request.setAttribute("product", product);
         request.setAttribute("reviews", reviews);
         request.getRequestDispatcher(ProjectPaths.JSP_PRODUCTDETAILSPAGE_PATH).forward(request, response);
