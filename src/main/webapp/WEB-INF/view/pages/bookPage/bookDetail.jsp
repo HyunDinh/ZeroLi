@@ -228,7 +228,7 @@
         <%--<div class="container">--%>
         <div class="breadcrumb">
             <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE%>">Trang Chủ</a> >
-            <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE%>">${book.category}</a> >
+            <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_VIEW_BOOK_BY_CATEGORY%>&category=${book.category}">${book.category}</a>
             <span>${book.bookName}</span>
         </div>
         <div class="book-detail">
@@ -242,7 +242,7 @@
                  margin: 0 auto;"></div>
             <div class="book-info">
                 <h1>${book.bookName}</h1>
-                <div class="category">Thể loại: <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_VIEW_BOOK%>>">${book.category}</a></div>
+                <div class="category">Thể loại: <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_VIEW_BOOK_BY_CATEGORY%>&category=${book.category}">${book.category}</a></div>
                 <div class="author">Tác giả: ${book.author}</div>
                 <div class="details">
                     <p>Định dạng: <span>Sách PDF</span></p>
@@ -250,10 +250,47 @@
                     <p>Kích thước: <span>${Math.floor(Math.random() * 5) + 1}.0 MB</span></p>
                     <p>Số trang: <span>${Math.floor(Math.random() * 300) + 200}</span></p>
                 </div>
-                <!-- Thay form bằng liên kết <a> -->
                 <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_FAVORITE_BOOK%>${book.bookId}" class="read-btn favorite-link">Thêm vào yêu thích</a>
-                <%--            <a href="${pageContext.request.contextPath}/main?action=${MainControllerServlet.BOOKDETAILPAGE_REDIRECT}&bookId=${book.bookId}&action=download" class="read-btn">Tải xuống</a>--%>
                 <a href="${pageContext.request.contextPath}/bookPDF?name=${book.pdfPath}" target="_blank" class="read-btn">Đọc sách</a>
+
+                <c:if test="${book.pdfPath != null && book.pdfPath != ''}">
+                    <a class="read-btn" id="playAudioBtn" >Nghe sách</a>
+                    <audio id="audioPlayer" controls style="display:none;" preload="auto">
+                        <source src="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_GET_AUDIO%>&bookId=${book.bookId}" type="audio/mp3">
+                        Trình duyệt của bạn không hỗ trợ phần tử âm thanh.
+                    </audio>
+                    <script>
+                        const playAudioBtn = document.getElementById('playAudioBtn');
+                        const audioPlayer = document.getElementById('audioPlayer');
+                        let isPlaying = false;
+
+                        playAudioBtn.addEventListener('click', function () {
+                            if (!isPlaying) {
+                                // Bắt đầu phát: Hiển thị thanh phát và phát âm thanh
+                                audioPlayer.style.display = 'block';
+                                audioPlayer.play();
+                                playAudioBtn.textContent = 'Dừng nghe';
+                                isPlaying = true;
+                            } else {
+                                // Dừng phát: Ẩn thanh phát và dừng âm thanh
+                                audioPlayer.pause();
+                                audioPlayer.currentTime = 0;
+                                audioPlayer.style.display = 'none';
+                                playAudioBtn.textContent = 'Nghe sách';
+                                isPlaying = false;
+                            }
+                        });
+
+                        // Tự động ẩn thanh phát và đặt lại trạng thái khi âm thanh kết thúc
+                        audioPlayer.addEventListener('ended', function () {
+                            audioPlayer.style.display = 'none';
+                            playAudioBtn.textContent = 'Nghe sách';
+                            isPlaying = false;
+                        });
+                    </script>
+                </c:if>
+
+
                 <div id="favoriteMessage" class="success-message"></div>
             </div>
         </div>
@@ -276,6 +313,9 @@
             </div>
         </div>
     </div>
+
+
+
     <script>
         function scrollCarousel(carouselId, scrollAmount) {
             const carousel = document.getElementById(carouselId);

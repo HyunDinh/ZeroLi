@@ -78,7 +78,6 @@ public abstract class BaseDAO {
     }
 
     public static void main(String[] args) {
-        insertUsersIntoDatabase();
         loadProductsIntoDatabase();
     }
 

@@ -7,14 +7,51 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import startup.zeroli.config.AbsolutePaths;
+import startup.zeroli.model.Event;
 import startup.zeroli.utils.ErrDialog;
 
-public class BookDAO{
-    private static final String FILE_PATH = "D:\\code\\University\\ZeroLi\\src\\main\\java\\startup\\zeroli\\dao\\nha_sach.txt";
+public class BookDAO {
+
+    public List<Event> readEventsFromFile() {
+        List<Event> events = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(AbsolutePaths.EVENTS_DATA_PATH))) {
+            String line;
+
+            // Đọc từng dòng từ file
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\|");
+
+                // Kiểm tra nếu dòng có đủ 3 phần (hình ảnh, tên sự kiện, mô tả)
+                if (parts.length == 3) {
+                    String imageUrl = parts[0].trim();      // Địa chỉ hình ảnh
+                    String eventName = parts[1].trim();     // Tên sự kiện
+                    String description = parts[2].trim();  // Mô tả sự kiện
+
+                    // In thông tin sự kiện để kiểm tra
+                    System.out.println("Hình ảnh: " + imageUrl);
+                    System.out.println("Tên sự kiện: " + eventName);
+                    System.out.println("Mô tả: " + description);
+                    System.out.println("------------------------");
+
+                    // Tạo đối tượng Event và thêm vào danh sách
+                    events.add(new Event(imageUrl, eventName, description));
+                } else {
+                    System.out.println("Dòng không hợp lệ: " + line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
     public List<Bookstore> readBookstoresFromFile() {
         List<Bookstore> bookstores = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(AbsolutePaths.BOOKSTORES_DATA_PATH))) {
             String line;
 
             // Đọc từng dòng từ file

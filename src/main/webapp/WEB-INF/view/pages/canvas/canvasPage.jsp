@@ -11,10 +11,9 @@
 
     <style>
         .pinterest-grid {
-            margin-top: 220px;
+            margin-top: 100px;
             column-count: 4;
             column-gap: 15px;
-            padding: 0 20px;
         }
 
         .pinterest-grid .grid-item {
@@ -93,6 +92,7 @@
 <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response); %>
 
 <div class="action-bar">
+    <a href="<%= ProjectPaths.HREF_TO_CANVASPAGE %>" class="action-button">All</a>
     <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_SEARCH_CANVAS %>&search=car" class="action-button">Car</a>
     <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_SEARCH_CANVAS %>&search=animal" class="action-button">Animal</a>
     <a href="<%= ProjectPaths.HREF_TO_MAINCONTROLLER + MainControllerServlet.ACTION_SEARCH_CANVAS %>&search=bike" class="action-button">Bike</a>

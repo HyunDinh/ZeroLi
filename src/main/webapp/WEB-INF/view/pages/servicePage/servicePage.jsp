@@ -117,7 +117,7 @@
                 object-fit: cover;
                 transition: transform 0.4s ease;
                 border-radius: 20px;
-                }
+            }
 
             .bookstore-card:hover .bookstore-image {
                 transform: scale(1.05);
@@ -227,28 +227,28 @@
         <% request.getRequestDispatcher("/WEB-INF/view/components/navbar.jsp").include(request, response);%>
 
         <a href="#" style="text-decoration: none; color: black;
-           "><h1 id="title" >BookStores</h1>
+           "><h1 id="title" >Tất cả nhà sách</h1>
         </a> 
         <div class="container">
             <!-- Thanh menu dọc -->
             <aside class="sidebar">
-                <h3>Areas</h3>
+                <h3>Khu vực</h3>
                 <ul>
                     <li>
                     <ion-icon name="location-outline" color="white"></ion-icon>
-                    <a href="#hanoi">Hà Nội</a>
+                    <a href="#hanoi">Nhà sách Hà Nội</a>
                     </li>
                     <li>
                     <ion-icon name="location-outline" color="white"></ion-icon>
-                    <a href="#danang">Đà Nẵng</a>
+                    <a href="#danang">Nhà sách Đà Nẵng</a>
                     </li>
                     <li>
                     <ion-icon name="location-outline" color="white"></ion-icon>
-                    <a href="#hcm">Hồ Chí Minh</a>
+                    <a href="#hcm">Nhà sách Thành Phố Hồ Chí Minh</a>
                     </li>
                     <li>
                     <ion-icon name="location-outline" color="white"></ion-icon>
-                    <a href="#cantho">Cần Thơ</a>
+                    <a href="#cantho">Nhà sách Cần Thơ</a>
                     </li>
                 </ul>
             </aside>
@@ -275,9 +275,11 @@
 
                 <!-- Nếu không có nhà sách nào -->
                 <c:if test="${empty bookstores}">
-                    <div class="no-bookstores">No bookstore to display</div>
+                    <div class="no-bookstores">Không có nhà sách để hiển thị.</div>
                 </c:if>
             </div>
         </div>
+
+        <jsp:include page="../../components/footer.jsp" />
     </body>
 </html>

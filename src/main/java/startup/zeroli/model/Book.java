@@ -1,6 +1,7 @@
 package startup.zeroli.model;
 
 public class Book {
+
     private Integer bookId;
     private String bookName;
     private String author;
@@ -76,15 +77,17 @@ public class Book {
         this.pdfPath = pdfPath;
     }
 
+
+
     @Override
     public String toString() {
-        return "Book{" +
-                "bookId=" + bookId +
-                ", bookName='" + bookName + '\'' +
-                ", author='" + author + '\'' +
-                ", category='" + category + '\'' +
-                ", imageBook='" + imageBook + '\'' +
-                ", pdfPath='" + pdfPath + '\'' +
-                '}';
+        return "Book{"
+                + "bookId=" + bookId
+                + ", bookName='" + bookName + '\''
+                + ", author='" + author + '\''
+                + ", category='" + category + '\''
+                + ", imageBook='" + imageBook + '\''
+                + ", pdfPath='" + pdfPath + '\''
+                + '}';
     }
 }

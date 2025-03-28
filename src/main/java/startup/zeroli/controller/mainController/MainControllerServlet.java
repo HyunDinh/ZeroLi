@@ -25,6 +25,9 @@ public class MainControllerServlet extends HttpServlet {
     public static final String PROFILEPAGE_REDIRECT = "profilePage";
     public static final String CARTPAGE_REDIRECT = "cartPage";
     public static final String CHECKOUTPAGE_REDIRECT = "checkoutPage";
+    public static final String CANVASDETAILPAGE_REDIRECT = "CanvasDetailPage";
+    public static final String SALEBOOKPAGE_REDIRECT = "saleBookPage";
+    public static final String SALEBOOKDETAILPAGE_REDIRECT = "saleBookDetailPage";
 
     // redirect to each servlets
     public static final String HOMEPAGE_SERVLET = "/" + HOMEPAGE_REDIRECT;
@@ -36,6 +39,9 @@ public class MainControllerServlet extends HttpServlet {
     public static final String PROFILEPAGAE_SERVLET = "/" + PROFILEPAGE_REDIRECT;
     public static final String CARTPAGE_SERVLET = "/" + CARTPAGE_REDIRECT;
     public static final String CHECKOUTPAGE_SERVLET = "/" + CHECKOUTPAGE_REDIRECT;
+    public static final String CANVASDETAILPAGE_SERVLET = "/" + CANVASDETAILPAGE_REDIRECT;
+    public static final String SALEBOOKPAGE_SERVLET = "/" + SALEBOOKPAGE_REDIRECT;
+    public static final String SALEBOOKDETAILPAGE_SERVLET = "/" + SALEBOOKDETAILPAGE_REDIRECT;
 
     // main?action=
     // post (Action)
@@ -51,13 +57,19 @@ public class MainControllerServlet extends HttpServlet {
     public static final String ACTION_APPLY_VOUCHER = "apply-voucher"; // cart
     public static final String ACTION_UPDATE_SELECTION = "update-selection"; // cart
     public static final String ACTION_CHECKOUT = "confirm-checkout"; // checkOut
+    public static final String ACTION_ADD_COMMENT_CANVAS = "addCommentCanvas"; // canvas comment
+    public static final String ACTION_DELETE_COMMENT = "deleteComment"; // canvas comment
+    public static final String ACTION_EDIT_COMMENT = "editComment"; // canvas comment
+    public static final String ACTION_SEARCH_BOOK_SUPPLIER_PRODUCT = "search-booksupplier-products"; // saleBook
 
     // get (Action)
     public static final String ACTION_SEARCHPRODUCT = "search-product"; // product
+    public static final String ACTION_SEARCH_CANVAS = "searchCanvas"; // canvas
     public static final String ACTION_VIEW_BOOK = "viewBook"; // book
     public static final String ACTION_VIEW_BOOKDETAIL = "viewBookDetail"; // book
     public static final String ACTION_FAVORITE_BOOK = "favoriteBook"; // book
-    public static final String ACTION_SEARCH_CANVAS = "searchCanvas"; // canvas
+    public static final String ACTION_GET_AUDIO = "getAudio"; // book
+    public static final String ACTION_VIEW_BOOK_BY_CATEGORY = "viewBookByCategory"; // book
 
     // session attribute
     public static final String SS_ATTR_ERROR = "aaaaaa";
@@ -67,7 +79,7 @@ public class MainControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // xu li du lieu dau vao
         String action = request.getParameter("action").trim();
-        
+
         switch (action) {
             case ACTION_LOGIN ->
                 request.getRequestDispatcher(LOGINPAGE_REDIRECT).forward(request, response);
@@ -80,8 +92,12 @@ public class MainControllerServlet extends HttpServlet {
             }
             case ACTION_CHECKOUT ->
                 request.getRequestDispatcher(CHECKOUTPAGE_REDIRECT).forward(request, response);
+            case ACTION_ADD_COMMENT_CANVAS, ACTION_DELETE_COMMENT, ACTION_EDIT_COMMENT ->
+                request.getRequestDispatcher(CANVASDETAILPAGE_REDIRECT).forward(request, response);
+            case ACTION_SEARCH_BOOK_SUPPLIER_PRODUCT ->
+                request.getRequestDispatcher(SALEBOOKPAGE_REDIRECT).forward(request, response);
             default ->
-                response.sendRedirect("errorAtMainController.jsp");
+                response.sendRedirect("errorAtMainController_DoPOST.jsp");
         }
     }
 
@@ -91,16 +107,26 @@ public class MainControllerServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action) {
-            case HOMEPAGE_REDIRECT, LOGINPAGE_REDIRECT, PRODUCTPAGE_REDIRECT, SERVICE_REDIRECT, BOOKPAGE_REDIRECT, CANVASPAGE_REDIRECT, PROFILEPAGE_REDIRECT, CARTPAGE_REDIRECT, CHECKOUTPAGE_REDIRECT ->
+            case HOMEPAGE_REDIRECT,
+                    LOGINPAGE_REDIRECT,
+                    PRODUCTPAGE_REDIRECT,
+                    SERVICE_REDIRECT,
+                    BOOKPAGE_REDIRECT,
+                    CANVASPAGE_REDIRECT,
+                    PROFILEPAGE_REDIRECT,
+                    CARTPAGE_REDIRECT,
+                    CHECKOUTPAGE_REDIRECT,
+                    SALEBOOKPAGE_REDIRECT,
+                    SALEBOOKDETAILPAGE_REDIRECT ->
                 request.getRequestDispatcher(action).forward(request, response);
             case ACTION_SEARCHPRODUCT ->
                 request.getRequestDispatcher(PRODUCTPAGE_REDIRECT).forward(request, response);
-            case ACTION_VIEW_BOOK, ACTION_VIEW_BOOKDETAIL, ACTION_FAVORITE_BOOK ->
+            case ACTION_VIEW_BOOK, ACTION_VIEW_BOOKDETAIL, ACTION_FAVORITE_BOOK, ACTION_GET_AUDIO, ACTION_VIEW_BOOK_BY_CATEGORY ->
                 request.getRequestDispatcher(BOOKPAGE_REDIRECT).forward(request, response);
             case ACTION_SEARCH_CANVAS ->
                 request.getRequestDispatcher(CANVASPAGE_REDIRECT).forward(request, response);
             default ->
-                response.sendRedirect("errorAtMainController.jsp");
+                response.sendRedirect("errorAtMainController_DoGET.jsp");
         }
     }
 

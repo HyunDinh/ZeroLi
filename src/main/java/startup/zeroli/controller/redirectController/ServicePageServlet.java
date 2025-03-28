@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import startup.zeroli.config.ProjectPaths;
 import startup.zeroli.controller.mainController.MainControllerServlet;
+import startup.zeroli.dao.BookDAO;
 import startup.zeroli.model.Bookstore;
+import startup.zeroli.model.Event;
 import startup.zeroli.service.BookStore.BookStoreService;
 import startup.zeroli.service.BookStore.BookStoreServiceImpl;
 
@@ -74,6 +76,36 @@ public class ServicePageServlet extends HttpServlet {
             // Cập nhật các đường link Google Maps cho nhà sách
             bookstore.setGoogleMapsLinks(googleMapsLinks);
         }
+        
+        // Đọc sự kiện từ file
+        BookDAO bd = new BookDAO();
+        List<Event> events = bd.readEventsFromFile();
+        // Kiểm tra sự kiện
+        System.out.println("Số lượng sự kiện: " + events.size());
+        if (events.isEmpty()) {
+            System.out.println("Không có sự kiện trong danh sách.");
+        }
+        for (int i = 0; i < events.size(); i++) {
+            Event event=events.get(i);
+            List<String> googleMapsLinks = new ArrayList<>();
+            if (i == 0) {
+                googleMapsLinks.add("https://www.google.com/maps/place/C%E1%BA%A7u+S%C3%B4ng+H%C3%A0n/@16.0721108,108.2242725,17z/data=!3m1!4b1!4m6!3m5!1s0x31421831cd8a36d1:0x384de766f6cc5a4e!8m2!3d16.0721108!4d108.2268474!16s%2Fm%2F05q4n12?entry=ttu&g_ep=EgoyMDI1MDMyMy4wIKXMDSoASAFQAw%3D%3D");
+            }else if (i == 1) {
+                googleMapsLinks.add("https://www.google.com/maps/place/46+B%E1%BA%A1ch+%C4%90%E1%BA%B1ng,+H%E1%BA%A3i+Ch%C3%A2u+1,+H%E1%BA%A3i+Ch%C3%A2u,+%C4%90%C3%A0+N%E1%BA%B5ng+550000,+Vi%E1%BB%87t+Nam/@16.0745019,108.2217385,17z/data=!3m1!4b1!4m6!3m5!1s0x31421830732669df:0x4b8bb529043b1cf3!8m2!3d16.0745019!4d108.2243134!16s%2Fg%2F11c1_6hvh1?entry=ttu&g_ep=EgoyMDI1MDMyMy4wIKXMDSoASAFQAw%3D%3D");
+            }
+            else if (i == 2) {
+                googleMapsLinks.add("https://www.google.com/maps/place/Ba+Na+Hills/@15.9951364,107.9935643,17z/data=!3m1!4b1!4m6!3m5!1s0x3141f7b5026661c9:0x847bab3e51ad7ea2!8m2!3d15.9951364!4d107.9961392!16s%2Fm%2F0gfdsrk?entry=ttu&g_ep=EgoyMDI1MDMyMy4wIKXMDSoASAFQAw%3D%3D");
+            }
+            else if (i == 3) {
+                googleMapsLinks.add("https://www.google.com/maps/place/C%C3%B4ng+vi%C3%AAn+Bi%E1%BB%83n+%C4%90%C3%B4ng/@16.0703173,108.2432619,17z/data=!3m1!4b1!4m6!3m5!1s0x3142171781bc61df:0x88236faf8a5f84f8!8m2!3d16.0703173!4d108.2458368!16s%2Fg%2F11fsn2h8z8?entry=ttu&g_ep=EgoyMDI1MDMyMy4wIKXMDSoASAFQAw%3D%3D");
+            }
+            event.setGoogleMapsLinks(googleMapsLinks);
+        }
+
+        // Thêm sự kiện vào request
+        request.setAttribute("events", events);
+        
+        
         request.setAttribute("bookstores", bookstores);
         request.getRequestDispatcher(ProjectPaths.JSP_SERVICE_PATH).forward(request, response);
     }

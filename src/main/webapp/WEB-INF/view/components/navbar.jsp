@@ -16,31 +16,47 @@
         <ul class="nav-links">
             <li><a href="<%= ProjectPaths.HREF_TO_HOMEPAGE %>">HomePage</a></li>
             <li><a href="<%= ProjectPaths.HREF_TO_FRIENDPAGE %>">Friends</a></li>
+
+
             <li class="dropdown-icon">
-                <a href="#">BookCase
+                <a href="#">Art
                     <ion-icon name="caret-down-outline" style="margin-bottom: -4px;"></ion-icon>
                 </a>
                 <div class="dropdown">
                     <div class="dropdown-category">
-                        <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE%>">Books</a>
                         <a href="<%= ProjectPaths.HREF_TO_CANVASPAGE%>">Canvas</a>
                         <a href="#">Showroom</a>
                     </div>
                 </div>
             </li>
+
+
+
             <li class="dropdown-icon">
-                <a href="#">Stores<ion-icon name="caret-down-outline" style="margin-bottom: -4px;"></ion-icon>
+                <a href="#">Books<ion-icon name="caret-down-outline" style="margin-bottom: -4px;"></ion-icon>
                 </a>
                 <div class="dropdown">
                     <div class="dropdown-category">
-                        <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE%>">Products</a>
-                        <a href="<%= ProjectPaths.HREF_TO_SERVICE%>">Services</a>
+                        <a href="<%= ProjectPaths.HREF_TO_BOOKPAGE%>">Read Books</a>
+                        <a href="<%= ProjectPaths.HREF_TO_SALEBOOKPAGE%>">Buy Books</a>
+                        <a href="<%= ProjectPaths.HREF_TO_SERVICE%>">BookStores</a>
                         <a href="#">AI-Service</a>
                     </div>
                 </div>
             </li>
-            <li><a href="#">Events</a></li>
+            
+            <li class="dropdown-icon">
+                <a href="#">Others<ion-icon name="caret-down-outline" style="margin-bottom: -4px;"></ion-icon>
+                </a>
+                <div class="dropdown">
+                    <div class="dropdown-category">
+                        <a href="<%= ProjectPaths.HREF_TO_PRODUCTPAGE%>">Electronic Shop</a>
+                    </div>
+                </div>
+            </li>
+
             <li><a href="#">Announcements</a></li>
+            
             <li class="dropdown-icon">
                 <a href="#">Personality<ion-icon name="caret-down-outline" style="margin-bottom: -4px;"></ion-icon>
                 </a>

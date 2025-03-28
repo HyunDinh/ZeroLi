@@ -6,12 +6,15 @@ import startup.zeroli.service.canvas.CanvasServiceImpl;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import startup.zeroli.config.AbsolutePaths;
 
 public class CanvasDAO {
-    String filePath = "D:\\code\\University\\ZeroLi\\src\\main\\java\\startup\\zeroli\\dao\\data_with_ids.csv";
+    
+        
+    
     public List<Canvas> getAllCanvas() {
         List<Canvas> canvasList = new ArrayList<>();
-                try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                try (BufferedReader br = new BufferedReader(new FileReader(AbsolutePaths.CANVAS_PATH))) {
                     String line;
                     boolean isFirstLine = true;
                     while ((line = br.readLine()) != null) {
@@ -44,7 +47,7 @@ public class CanvasDAO {
     }
     public List<Canvas> getCanvasImage() {
         List<Canvas> canvases = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(AbsolutePaths.CANVAS_PATH), "UTF-8"))) {
             String line;
             int lineNumber = 0;
             while ((line = br.readLine()) != null) {
